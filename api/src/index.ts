@@ -1,10 +1,14 @@
 import  express from 'express'
+import { connectToDB } from './config/db';
 
 const app = express();
 
 app.get('/', (req, res) => {
     res.send('Testing');
 });
+
+
+connectToDB();
 
 const PORT = 2503
 app.listen(PORT, () => {
