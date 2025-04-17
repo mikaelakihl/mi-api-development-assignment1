@@ -29,3 +29,23 @@ export const getProductById = async (req: Request, res: Response) => {
     }
 
 };
+
+export const addNewProduct = async (req: Request, res: Response) => {
+    const {title,description,price,image,stock,category_id} = req.body;
+
+    if (!title || !price || !category_id) {
+        return res.status(400).send('Missing required information');
+    }
+
+    try {
+        const [result] = await db.query(
+            'INSERT INTO products (title, description, price, image, stock, category_id) VALUES (?, ?, ?, ?, ?, ?)',
+             [title, description, price, image, stock, category_id]
+        );
+
+        res.status(201).json({message: 'Product created', productId: (result as any).insertId});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error creating new product');
+    }
+};
