@@ -10,7 +10,6 @@ export const db = mysql.createPool({
 
 export const connectToDB = async () => {
     try {
-        console.log('🔍 DB config:', db.config.connectionConfig);
         await db.getConnection();
         console.log('You succeed with connection to DB')
     } catch (error: unknown) {
