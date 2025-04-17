@@ -1,5 +1,7 @@
+import 'dotenv/config';
 import  express from 'express'
 import { connectToDB } from './config/db';
+
 
 const app = express();
 
@@ -7,6 +9,8 @@ app.get('/', (req, res) => {
     res.send('Testing');
 });
 
+import productRoute from './routes/productRoute'
+app.use('/', productRoute)
 
 connectToDB();
 
