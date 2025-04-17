@@ -49,3 +49,21 @@ export const addNewProduct = async (req: Request, res: Response) => {
         res.status(500).send('Error creating new product');
     }
 };
+
+export const deleteProductById = async (req: Request, res:Response) => {
+    const {id} = req.params;
+
+    try {
+        const [result] = await db.query('DELETE FROM products WHERE id = ?', [id]);
+
+        if ((result as any).affectedRows === 0) {
+            return res.status(404).send('Product not found');
+        }
+
+        res.status(200).json({message: `Product with id ${id} deleted`});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error deleting product');
+    }
+    
+};
