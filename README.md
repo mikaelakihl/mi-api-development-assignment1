@@ -70,7 +70,7 @@ POST /products
 
 ## 📸 ER Diagram
 
-![](assets/er-diagram-sql/ERdiagram-api-development.png)
+![](api/assets/er-diagram-sql/ERdiagram-api-development.png)
 
 ---
 
