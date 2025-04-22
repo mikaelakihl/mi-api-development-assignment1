@@ -90,4 +90,22 @@ export const updateCategoryById = async (req: Request, res: Response) => {
     }
 };
 
+export const deleteCategoryById = async (req: Request, res:Response) => {
+    const {id} = req.params;
+
+    try {
+        const [result] = await db.query('DELETE FROM categories WHERE id = ?', [id]);
+
+        if ((result as any).affectedRows === 0) {
+            return res.status(404).send('Category not found');
+        }
+
+        res.status(200).json({message: `Category with id ${id} is deleted`});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error deleting category');
+    }
+    
+};
+
         
