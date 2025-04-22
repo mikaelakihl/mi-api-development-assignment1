@@ -35,4 +35,24 @@ export const getProductsByCategoryId = async (req: Request, res: Response) => {
     }
 };
 
+export const addNewCategory = async (req: Request, res: Response) => {
+    const {name} = req.body;
+
+    if (!name) {
+        return res.status(400).send('Missing required information');
+    }
+
+    try {
+        const [result] = await db.query(
+            'INSERT INTO categories (name) VALUES (?)',
+             [name]
+        );
+
+        res.status(201).json({message: 'Category created', categoryId: (result as any).insertId});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error creating new category');
+    }
+};
+
         
