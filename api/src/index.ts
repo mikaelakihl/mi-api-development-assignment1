@@ -14,6 +14,9 @@ app.get('/', (req, res) => {
 import productRoute from './routes/productRoute'
 app.use('/', productRoute)
 
+import categoryRoute from './routes/categoryRoute'
+app.use('/', categoryRoute)
+
 connectToDB();
 
 const PORT = 2503
