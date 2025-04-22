@@ -55,4 +55,39 @@ export const addNewCategory = async (req: Request, res: Response) => {
     }
 };
 
+export const updateCategoryById = async (req: Request, res: Response) => {
+    const {id} = req.params;
+    const {name} = req.body;
+
+    try {
+        const fields: string [] = [];
+        const values: any[] = [];
+
+        if (name !== undefined) {
+            fields.push('name = ?');
+            values.push (name);
+        }
+
+        if (fields.length === 0) {
+            return res.status(400).send('No fields to update');
+        }
+
+        values.push(id);
+
+        const [result] = await db.query(
+            `UPDATE categories SET ${fields.join(', ')} WHERE id = ?`, 
+            values
+        );
+
+        if ((result as any).affectedRows === 0) {
+            return res.status(404).send('Category not found');
+          }
+
+        res.status(200).json({ message: `Category with id ${id} is updated` });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error updating category');
+    }
+};
+
         
