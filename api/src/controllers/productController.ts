@@ -67,3 +67,63 @@ export const deleteProductById = async (req: Request, res:Response) => {
     }
     
 };
+
+export const updateProductById = async (req: Request, res: Response) => {
+    const {id} = req.params;
+    const {title, description, price, image, stock, category_id} = req.body;
+
+    try {
+        const fields: string [] = [];
+        const values: any[] = [];
+
+        if (title !== undefined) {
+            fields.push('title = ?');
+            values.push (title);
+        }
+
+        if (description !== undefined) {
+            fields.push('description = ?');
+            values.push (description);
+        }
+
+        if (price !== undefined) {
+            fields.push('price = ?');
+            values.push (price);
+        }
+
+        if (image !== undefined) {
+            fields.push('image = ?');
+            values.push (image);
+        }
+
+        if (stock !== undefined) {
+            fields.push('stock = ?');
+            values.push (stock);
+        }
+
+        if (category_id !== undefined) {
+            fields.push('category_id = ?');
+            values.push (category_id);
+        }
+
+        if (fields.length === 0) {
+            return res.status(400).send('No fields to update');
+        }
+
+        values.push(id);
+
+        const [result] = await db.query(
+            `UPDATE products SET ${fields.join(', ')} WHERE id = ?`, 
+            values
+        );
+
+        if ((result as any).affectedRows === 0) {
+            return res.status(404).send('Product not found');
+          }
+
+        res.status(200).json({ message: `Product with id ${id} is updated` });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error updating product');
+    }
+};
